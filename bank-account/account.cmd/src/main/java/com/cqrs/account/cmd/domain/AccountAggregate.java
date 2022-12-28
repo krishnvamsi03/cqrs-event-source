@@ -46,7 +46,7 @@ public class AccountAggregate extends AggregatorRoot {
 
     public void apply(FundsDepositedEvent event) {
         this.id = event.getId();
-        this.balance = event.getAmount();
+        this.balance += event.getAmount();
     }
 
     public void withDrawFunds(double amount) {
@@ -63,7 +63,7 @@ public class AccountAggregate extends AggregatorRoot {
 
     public void apply(FundsWithdrawnEvent event) {
         this.id = event.getId();
-        this.balance = event.getAmount();
+        this.balance -= event.getAmount();
     }
 
     public void closeAccount() {

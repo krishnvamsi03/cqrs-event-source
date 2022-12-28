@@ -7,6 +7,7 @@ import com.cqrs.cqrs.core.events.EventModel;
 import com.cqrs.cqrs.core.exceptions.AggregatoreNotFound;
 import com.cqrs.cqrs.core.exceptions.ConcurrentException;
 import com.cqrs.cqrs.core.infrastructure.EventStore;
+import com.cqrs.cqrs.core.producers.EventProducer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,9 @@ public class AccountEventStore implements EventStore {
 
     @Autowired
     private EventStoreRepository eventStoreRepository;
+
+    @Autowired
+    private EventProducer eventProducer;
 
     @Override
     public void saveEvents(String aggregateId, List<BaseEvent> events,
@@ -44,8 +48,8 @@ public class AccountEventStore implements EventStore {
                     .version(version)
                     .build();
             var persistedStore = eventStoreRepository.save(eventModel);
-            if (persistedStore != null) {
-
+            if (!persistedStore.getId().isEmpty()) {
+                eventProducer.produce(event.getClass().getSimpleName(), event);
             }
         }
 
