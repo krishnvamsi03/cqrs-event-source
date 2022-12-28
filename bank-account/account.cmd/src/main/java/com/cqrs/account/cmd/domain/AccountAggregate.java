@@ -77,4 +77,8 @@ public class AccountAggregate extends AggregatorRoot {
         this.id = event.getId();
         this.isActive = false;
     }
+
+    public double getBalance() {
+        return this.balance;
+    }
 }
