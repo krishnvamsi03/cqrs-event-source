@@ -26,7 +26,7 @@ public class AccountEventSourcingHandler implements EventSourceHandler<AccountAg
     @Override
     public AccountAggregate getById(String id) {
         var aggregator = new AccountAggregate();
-        var events = eventStore.getEvents(aggregator.getId());
+        var events = eventStore.getEvents(id);
         if (events != null && !events.isEmpty()) {
             aggregator.replayEvents(events);
             var latestVersion =

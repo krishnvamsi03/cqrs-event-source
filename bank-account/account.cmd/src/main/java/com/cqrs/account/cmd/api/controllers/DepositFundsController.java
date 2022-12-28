@@ -30,12 +30,13 @@ public class DepositFundsController {
         command.setId(id);
         try {
             commandDispatcher.sendCommand(command);
-            return new ResponseEntity<>(new BaseResponse("Account " +
-                    "opened successfully "), HttpStatus.OK);
+            return new ResponseEntity<>(new BaseResponse("Amount deposited " +
+                    "successfully"), HttpStatus.OK);
         } catch (IllegalStateException e) {
             logger.log(Level.WARNING, MessageFormat.format("Client made a bad" +
                     " request for id - {0}", id));
-            return new ResponseEntity<>(new BaseResponse(e.toString()), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new BaseResponse(e.toString()),
+                    HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             logger.log(Level.SEVERE, MessageFormat.format("error while " +
                             "processing request to open a new bank account - " +
@@ -43,7 +44,8 @@ public class DepositFundsController {
                     id), e);
             var safeErrorMessage = MessageFormat.format("Error while " +
                     "processing request for this id ", id);
-            return new ResponseEntity<>(new BaseResponse(safeErrorMessage), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new BaseResponse(safeErrorMessage),
+                    HttpStatus.INTERNAL_SERVER_ERROR);
 
         }
     }

@@ -39,7 +39,6 @@ public class AccountEventStore implements EventStore {
             version++;
             event.setVersion(version);
             var eventModel = EventModel.builder()
-                    .id(event.getId())
                     .timeStamp(new Date())
                     .eventData(event)
                     .eventType(event.getClass().getTypeName())
@@ -59,7 +58,7 @@ public class AccountEventStore implements EventStore {
     public List<BaseEvent> getEvents(String aggregateId) {
         var eventStream =
                 eventStoreRepository.findByAggregateIdentifier(aggregateId);
-        if (eventStream != null || eventStream.size() == 0) {
+        if (eventStream == null || eventStream.size() == 0) {
             throw new AggregatoreNotFound();
         }
         return eventStream.stream().map(x -> x.getEventData()).collect(Collectors.toList());

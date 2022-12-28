@@ -24,13 +24,13 @@ public class WithDrawFundsController {
     private CommandDispatcher commandDispatcher;
 
     @PutMapping(path = "/{id}")
-    public ResponseEntity<BaseResponse> depositFunds(@PathVariable(value =
+    public ResponseEntity<BaseResponse> withdrawFunds(@PathVariable(value =
             "id") String id, @RequestBody WithDrawFundsCommand command) {
         command.setId(id);
         try {
             commandDispatcher.sendCommand(command);
-            return new ResponseEntity<>(new BaseResponse("Account " +
-                    "opened successfully "), HttpStatus.OK);
+            return new ResponseEntity<>(new BaseResponse("Amount withdrawn " +
+                    "successfully"), HttpStatus.OK);
         } catch (IllegalStateException e) {
             logger.log(Level.WARNING, MessageFormat.format("Client made a bad" +
                     " request for id - {0}", id));
