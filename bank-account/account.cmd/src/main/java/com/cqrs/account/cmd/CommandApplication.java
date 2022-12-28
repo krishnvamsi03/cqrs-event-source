@@ -2,6 +2,7 @@ package com.cqrs.account.cmd;
 
 import com.cqrs.account.cmd.api.commands.*;
 import com.cqrs.cqrs.core.commands.CommandDispatcher;
+import com.cqrs.cqrs.core.commands.CommandHandlerMethod;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
