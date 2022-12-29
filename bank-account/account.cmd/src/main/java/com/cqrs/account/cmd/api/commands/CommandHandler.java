@@ -8,4 +8,6 @@ public interface CommandHandler {
     void handle(WithDrawFundsCommand command);
 
     void handle(CloseAccountCommand command);
+
+    void handle(RestoreReadDBCommand command);
 }

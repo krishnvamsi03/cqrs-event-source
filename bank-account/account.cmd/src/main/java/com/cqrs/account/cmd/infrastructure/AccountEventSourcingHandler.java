@@ -4,6 +4,7 @@ import com.cqrs.account.cmd.domain.AccountAggregate;
 import com.cqrs.cqrs.core.domain.AggregatorRoot;
 import com.cqrs.cqrs.core.handler.EventSourceHandler;
 import com.cqrs.cqrs.core.infrastructure.EventStore;
+import com.cqrs.cqrs.core.producers.EventProducer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,9 @@ public class AccountEventSourcingHandler implements EventSourceHandler<AccountAg
 
     @Autowired
     private EventStore eventStore;
+
+    @Autowired
+    private EventProducer eventProducer;
 
     @Override
     public void save(AggregatorRoot aggregatorRoot) {
@@ -34,5 +38,18 @@ public class AccountEventSourcingHandler implements EventSourceHandler<AccountAg
             aggregator.setVersion(latestVersion.get());
         }
         return aggregator;
+    }
+
+    @Override
+    public void republishEvents() {
+        var aggregateIdentifier =  eventStore.getAggregateIds();
+        for (var id : aggregateIdentifier) {
+            var aggregator = getById(id);
+            if (aggregator == null || !aggregator.getActive()) continue;
+            var events = eventStore.getEvents(id);
+            for (var event : events) {
+                eventProducer.produce(event.getClass().getSimpleName(), event);
+            }
+        }
     }
 }

@@ -35,7 +35,7 @@ public class AccountEventStore implements EventStore {
         }
 
         var version = expectedVersion;
-        for (var event: events ) {
+        for (var event : events) {
             version++;
             event.setVersion(version);
             var eventModel = EventModel.builder()
@@ -62,5 +62,14 @@ public class AccountEventStore implements EventStore {
             throw new AggregatoreNotFound();
         }
         return eventStream.stream().map(x -> x.getEventData()).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<String> getAggregateIds() {
+        var eventStream = eventStoreRepository.findAll();
+        if (eventStream == null || eventStream.size() == 0) {
+            throw new IllegalStateException("No events found");
+        }
+        return eventStream.stream().map(EventModel::getAggregateIdentifier).collect(Collectors.toList());
     }
 }

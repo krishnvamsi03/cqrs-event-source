@@ -81,4 +81,7 @@ public class AccountAggregate extends AggregatorRoot {
     public double getBalance() {
         return this.balance;
     }
+    public boolean getActive() {
+        return isActive;
+    }
 }
