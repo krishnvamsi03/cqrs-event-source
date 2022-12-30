@@ -104,5 +104,8 @@ URL: http://localhost:8082/api/v1/accountLookup/byBalance/{EqualityType}/{amount
 EqualityType : {GREATER_THAN, LESS_THAN}
 amount: 100, 1
 
+#### Run
+1. run compose file by running docker-compose up -d
+2. then clone this repo, build all repo, then CommanApplication.java, and then QueryApplication.java
 
 Note: This is repo is part of learning, all the contents are from UDEMY course, course name: Java Microservices : CQRS & Event sourcing using from Kafka by Sean Campbell
